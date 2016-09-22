@@ -18,7 +18,7 @@ type Epub struct {
 	rootPath string
 	metadata mdata
 	opf      *xmlOPF
-	ncx      *xmlNCX
+	NCX      *XmlNCX
 }
 
 type mdata map[string][]mdataElement
@@ -83,7 +83,7 @@ func (e *Epub) parseFiles() (err error) {
 			return errors.New("Can't open the NCX file")
 		}
 		defer ncx.Close()
-		e.ncx, err = parseNCX(ncx)
+		e.NCX, err = parseNCX(ncx)
 	}
 	return
 }
@@ -110,10 +110,10 @@ func (e Epub) OpenFileId(id string) (io.ReadCloser, error) {
 
 // Navigation returns a navigation iterator
 func (e Epub) Navigation() (*NavigationIterator, error) {
-	if e.ncx == nil {
+	if e.NCX == nil {
 		return nil, errors.New("There is no NCX file on the epub")
 	}
-	return newNavigationIterator(e.ncx.navMap())
+	return newNavigationIterator(e.NCX.navMap())
 }
 
 // Spine returns a spine iterator

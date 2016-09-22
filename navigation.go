@@ -17,11 +17,11 @@ type NavigationIterator struct {
 	curr    navCursor
 }
 type navCursor struct {
-	navMap []navpoint
+	navMap NavPointArray
 	index  int
 }
 
-func newNavigationIterator(navMap []navpoint) (*NavigationIterator, error) {
+func newNavigationIterator(navMap NavPointArray) (*NavigationIterator, error) {
 	if len(navMap) == 0 {
 		return nil, errors.New("Navigation is empty")
 	}
@@ -111,6 +111,6 @@ func (nav *NavigationIterator) Out() error {
 	return nil
 }
 
-func (nav NavigationIterator) item() *navpoint {
-	return &nav.curr.navMap[nav.curr.index]
+func (nav NavigationIterator) item() *NavPoint {
+	return nav.curr.navMap[nav.curr.index]
 }

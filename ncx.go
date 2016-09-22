@@ -8,20 +8,22 @@ import (
 	"io"
 )
 
-type xmlNCX struct {
-	NavMap []navpoint `xml:"navMap>navPoint"`
+type XmlNCX struct {
+	NavMap NavPointArray `xml:"navMap>navPoint"`
 }
-type navpoint struct {
-	Text     string     `xml:"navLabel>text"`
-	Content  content    `xml:"content"`
-	NavPoint []navpoint `xml:"navPoint"`
+type NavPoint struct {
+	Text      string        `xml:"navLabel>text"`
+	Content   content       `xml:"content"`
+	NavPoints NavPointArray `xml:"navPoint"`
 }
 type content struct {
 	Src string `xml:"src,attr"`
 }
 
-func parseNCX(ncx io.Reader) (*xmlNCX, error) {
-	var n xmlNCX
+type NavPointArray []*NavPoint
+
+func parseNCX(ncx io.Reader) (*XmlNCX, error) {
+	var n XmlNCX
 	err := decodeXML(ncx, &n)
 	if err != nil {
 		return nil, err
@@ -30,18 +32,18 @@ func parseNCX(ncx io.Reader) (*xmlNCX, error) {
 	return &n, nil
 }
 
-func (ncx xmlNCX) navMap() []navpoint {
+func (ncx XmlNCX) navMap() NavPointArray {
 	return ncx.NavMap
 }
 
-func (point navpoint) Title() string {
+func (point NavPoint) Title() string {
 	return point.Text
 }
 
-func (point navpoint) URL() string {
+func (point NavPoint) URL() string {
 	return point.Content.Src
 }
 
-func (point navpoint) Children() []navpoint {
-	return point.NavPoint
+func (point NavPoint) Children() NavPointArray {
+	return point.NavPoints
 }

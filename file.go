@@ -9,6 +9,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"golang.org/x/net/html/charset"
+	// "github.com/golang/net/html/charset"
 	"io"
 	"path"
 	"strings"
