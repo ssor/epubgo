@@ -13,12 +13,13 @@ import (
 
 // Epub holds all the data of the ebook
 type Epub struct {
-	file     *os.File
-	zip      *zip.Reader
-	rootPath string
-	metadata mdata
-	opf      *xmlOPF
-	NCX      *XmlNCX
+	file                *os.File
+	zip                 *zip.Reader
+	rootPath            string
+	metadata            mdata
+	opf                 *xmlOPF
+	NCX                 *XmlNCX
+	CharactorStatistics []*CharactorStatistic
 }
 
 type mdata map[string][]mdataElement
@@ -46,6 +47,7 @@ func Open(path string) (e *Epub, err error) {
 func Load(r io.ReaderAt, size int64) (e *Epub, err error) {
 	e = new(Epub)
 	e.file = nil
+	e.CharactorStatistics = []*CharactorStatistic{}
 	err = e.load(r, size)
 	return
 }
@@ -73,6 +75,33 @@ func (e *Epub) parseFiles() (err error) {
 	e.opf, err = parseOPF(opfFile)
 	if err != nil {
 		return
+	}
+
+	if e.opf.spineLength() > 0 {
+		statistics := []*CharactorStatistic{}
+		// opf_path, err := getOpfPath(e.zip)
+		// if err != nil {
+		// 	return err
+		// }
+		// dir, _ := filepath.Split(opf_path)
+		for _, item := range e.opf.Spine.Items {
+			// log.Println("try to find file id => ", dir+item.IDref)
+			reader_closer, err := e.OpenFileId(item.IDref)
+			// reader_closer, err := openFile(e.zip, dir+item.IDref)
+			if err != nil {
+				return err
+			}
+			defer reader_closer.Close()
+			content, err := GetHtmlContent(reader_closer)
+			if err != nil {
+				return err
+			}
+			statistics = append(statistics, &CharactorStatistic{
+				File:   (item.IDref),
+				Length: len(content),
+			})
+		}
+		e.CharactorStatistics = statistics
 	}
 
 	e.metadata = e.opf.toMData()

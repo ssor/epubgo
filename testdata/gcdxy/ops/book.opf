@@ -1,0 +1,78 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="uuid">
+    <metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:opf="http://www.idpf.org/2007/opf" xmlns:dcterms="http://purl.org/dc/terms/"
+        xmlns:calibre="http://calibre.kovidgoyal.net/2009/metadata" xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <dc:title>共产党宣言_B_1978_000042</dc:title>
+        <dc:creator>马克思　恩格斯　著</dc:creator>
+        <dc:identifier id="uuid">1001·1165</dc:identifier>
+        <dc:language>zh-cn</dc:language>
+        <dc:date>1978-11</dc:date>
+        <dc:publisher>人民出版社</dc:publisher>
+        <dc:description>
+            <![CDATA[]]>
+        </dc:description>
+        <dc:subject></dc:subject>
+        <dc:type>图书</dc:type>
+        <dc:rights></dc:rights>
+        <meta name="cover" content="images_cover_jpg" />
+    </metadata>
+    <manifest>
+        <item href="a_cover.xhtml" id="a_cover_xhtml" media-type="application/xhtml+xml" />
+        <item href="b_content.xhtml" id="b_content_xhtml" media-type="application/xhtml+xml" />
+        <item href="book.ncx" id="book_ncx" media-type="application/x-dtbncx+xml" />
+        <item href="chapter_00001.xhtml" id="chapter_00001_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00002.xhtml" id="chapter_00002_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00003.xhtml" id="chapter_00003_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00004.xhtml" id="chapter_00004_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00005.xhtml" id="chapter_00005_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00006.xhtml" id="chapter_00006_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00007.xhtml" id="chapter_00007_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00008.xhtml" id="chapter_00008_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00009.xhtml" id="chapter_00009_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00010.xhtml" id="chapter_00010_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00011.xhtml" id="chapter_00011_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00012.xhtml" id="chapter_00012_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00013.xhtml" id="chapter_00013_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00014.xhtml" id="chapter_00014_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00015.xhtml" id="chapter_00015_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00016.xhtml" id="chapter_00016_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00017.xhtml" id="chapter_00017_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00018.xhtml" id="chapter_00018_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00019.xhtml" id="chapter_00019_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00020.xhtml" id="chapter_00020_xhtml" media-type="application/xhtml+xml" />
+        <item href="chapter_00021.xhtml" id="chapter_00021_xhtml" media-type="application/xhtml+xml" />
+        <item href="css/stylesheet.css" id="css_stylesheet_css" media-type="text/css" />
+        <item href="images/cover.jpg" id="images_cover_jpg" media-type="image/jpeg" />
+        <item href="images/P6_468.jpg" id="images_P6_468_jpg" media-type="image/jpeg" />
+        <item href="images/P6_469.jpg" id="images_P6_469_jpg" media-type="image/jpeg" />
+        <item href="images/P7_471.jpg" id="images_P7_471_jpg" media-type="image/jpeg" />
+    </manifest>
+    <spine toc="book_ncx">
+        <itemref idref="a_cover_xhtml" linear="yes" />
+        <itemref idref="b_content_xhtml" linear="yes" />
+        <itemref idref="chapter_00001_xhtml" linear="yes" />
+        <itemref idref="chapter_00002_xhtml" linear="yes" />
+        <itemref idref="chapter_00003_xhtml" linear="yes" />
+        <itemref idref="chapter_00004_xhtml" linear="yes" />
+        <itemref idref="chapter_00005_xhtml" linear="yes" />
+        <itemref idref="chapter_00006_xhtml" linear="yes" />
+        <itemref idref="chapter_00007_xhtml" linear="yes" />
+        <itemref idref="chapter_00008_xhtml" linear="yes" />
+        <itemref idref="chapter_00009_xhtml" linear="yes" />
+        <itemref idref="chapter_00010_xhtml" linear="yes" />
+        <itemref idref="chapter_00011_xhtml" linear="yes" />
+        <itemref idref="chapter_00012_xhtml" linear="yes" />
+        <itemref idref="chapter_00013_xhtml" linear="yes" />
+        <itemref idref="chapter_00014_xhtml" linear="yes" />
+        <itemref idref="chapter_00015_xhtml" linear="yes" />
+        <itemref idref="chapter_00016_xhtml" linear="yes" />
+        <itemref idref="chapter_00017_xhtml" linear="yes" />
+        <itemref idref="chapter_00018_xhtml" linear="yes" />
+        <itemref idref="chapter_00019_xhtml" linear="yes" />
+        <itemref idref="chapter_00020_xhtml" linear="yes" />
+        <itemref idref="chapter_00021_xhtml" linear="yes" />
+    </spine>
+    <guide>
+        <reference href="a_cover.xhtml" type="cover" title="cover" />
+    </guide>
+</package>
