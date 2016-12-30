@@ -1,0 +1,102 @@
+@namespace h "http://www.w3.org/1999/xhtml";
+
+body{
+ margin:10px;
+ font-size: 1.1em;
+}
+table{
+margin:auto;
+}
+.pic{
+text-align:center;
+}
+.tab{
+text-align:center;
+}
+.pic_table{
+text-align:center;
+}
+.pic_formula{
+text-align:center;
+}
+
+.title_pic{
+text-align:center;
+}
+.title_table{
+margin:10pt;
+text-align:center;
+}
+
+.note_pic{
+text-align:center;
+}
+.note_table{
+text-align:center;
+}
+
+p{text-indent:2em; line-height:1.5em; margin-top:0; margin-bottom:0;}
+.catalog{
+	margin:1pt;
+	padding:0;
+	text-indent:2em;
+}
+h1{text-align:center; font-size:1.6em; font-weight:bold;font-family:ºÚÌå}
+
+h2 {
+	text-align:center;
+    display: block;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+h3 {
+	text-align:center;
+}
+.mbppagebreak {
+    display: block;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    page-break-after: always
+    }
+a {
+    color: inherit;
+    text-decoration: inherit;
+    cursor: default
+    }
+a[href] {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer
+    }
+
+.italic {
+    font-style: italic
+    }
+
+.struct_table{
+	border:1;
+}
+
+.contents-title{font-size:2em;font-family:"hei";margin-bottom:1em;margin-top:1em;text-align:center;font-weight:normal;}
+.contents1{font-size:1.5em;margin-left:0em;font-family:"song";line-height:1.5em;text-align:justify;}
+.contents2{font-size:1.3em;margin-left:2em;font-family:"song";line-height:1.5em;text-align:justify;}
+.contents3{font-size:1.15em;margin-left:4em;font-family:"song";line-height:1.5em;text-align:justify;}
+.contents4{font-size:1em;margin-left:6em;font-family:"song";line-height:1.5em;text-align:justify;}
+.contents5{font-size:1em;margin-left:8em;font-family:"song";line-height:1.5em;text-align:justify;}
+.contents6{font-size:1em;margin-left:10em;font-family:"song";line-height:1.5em;text-align:justify;}
+.contents7{font-size:1em;margin-left:12em;font-family:"song";line-height:1.5em;text-align:justify;}
+.contents8{font-size:1em;margin-left:14em;font-family:"song";line-height:1.5em;text-align:justify;}
+.contents9{font-size:1em;margin-left:16em;font-family:"song";line-height:1.5em;text-align:justify;}
+
+.note{
+	font-size:small;
+	border:solid 1px black;
+}
+.yinwen{
+	font-size:small;
+}
+.poem{
+	font-size:small;
+}

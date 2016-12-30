@@ -8,6 +8,8 @@ import (
 	"archive/zip"
 	"encoding/xml"
 	"errors"
+	"log"
+
 	"golang.org/x/net/html/charset"
 	// "github.com/golang/net/html/charset"
 	"io"
@@ -24,10 +26,13 @@ type rootfile struct {
 }
 
 func openOPF(file *zip.Reader) (io.ReadCloser, error) {
+
 	path, err := getOpfPath(file)
+
 	if err != nil {
 		return nil, err
 	}
+	log.Println("opf path => ", path)
 	return openFile(file, path)
 }
 
