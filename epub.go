@@ -79,15 +79,8 @@ func (e *Epub) parseFiles() (err error) {
 
 	if e.opf.spineLength() > 0 {
 		statistics := []*CharactorStatistic{}
-		// opf_path, err := getOpfPath(e.zip)
-		// if err != nil {
-		// 	return err
-		// }
-		// dir, _ := filepath.Split(opf_path)
 		for _, item := range e.opf.Spine.Items {
-			// log.Println("try to find file id => ", dir+item.IDref)
 			reader_closer, err := e.OpenFileId(item.IDref)
-			// reader_closer, err := openFile(e.zip, dir+item.IDref)
 			if err != nil {
 				return err
 			}
