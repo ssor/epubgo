@@ -9,6 +9,8 @@ import (
 	"io"
 )
 
+// List all XHTML documents in manifest (using the idref), and not anything else, and with no duplicates. The order is significant. (XHTML documents can be omitted, but then they must not be linked, referenced or reachable from any part of the publication.)
+
 // SpineIterator is an iterator on the epub pages spine
 //
 // With it is possible to navigate throw the pages of the epub.

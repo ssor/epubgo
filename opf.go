@@ -11,10 +11,16 @@ import (
 	"strings"
 )
 
+/* manifest:
+List every file that is part of the publication. But not: mimetype, container.xml, content.opf . The order is not significant.
+Give correct mime-type in media-type attribute. ids are required and must be unique in the content.opf file.
+
+*/
+
 type xmlOPF struct {
-	Metadata meta       `xml:"metadata"`
-	Manifest []manifest `xml:"manifest>item"`
-	Spine    spine      `xml:"spine"`
+	Metadata meta        `xml:"metadata"`
+	Manifest []*manifest `xml:"manifest>item"`
+	Spine    spine       `xml:"spine"`
 }
 type meta struct {
 	Title       []string     `xml:"title"`
@@ -54,12 +60,13 @@ type metafield struct {
 	Content string `xml:"content,attr"`
 }
 type manifest struct {
-	ID           string `xml:"id,attr"`
-	Href         string `xml:"href,attr"`
-	MediaType    string `xml:"media-type,attr"`
-	Fallback     string `xml:"media-fallback,attr"`
-	Properties   string `xml:"properties,attr"`
-	MediaOverlay string `xml:"media-overlay,attr"`
+	ID             string `xml:"id,attr"`
+	Href           string `xml:"href,attr"`
+	MediaType      string `xml:"media-type,attr"`
+	Fallback       string `xml:"media-fallback,attr"`
+	Properties     string `xml:"properties,attr"`
+	MediaOverlay   string `xml:"media-overlay,attr"`
+	CharactorCount int
 }
 type spine struct {
 	ID              string      `xml:"id,attr"`
@@ -106,9 +113,9 @@ func (opf xmlOPF) filePath(id string) string {
 	return ""
 }
 
-func (opf xmlOPF) toMData() mdata {
+func (opf xmlOPF) toMData() MetaDataList {
 	m := opf.Metadata
-	metadata := make(mdata)
+	metadata := make(MetaDataList)
 	v := reflect.ValueOf(m)
 	typeOf := v.Type()
 	for i := 0; i < v.NumField(); i++ {
@@ -118,7 +125,7 @@ func (opf xmlOPF) toMData() mdata {
 		}
 
 		fieldName := strings.ToLower(typeOf.Field(i).Name)
-		data := make([]mdataElement, field.Len())
+		data := make([]MdataElement, field.Len())
 		for j := 0; j < field.Len(); j++ {
 			element := field.Index(j).Interface()
 			data[j] = elementToMData(element)
@@ -128,7 +135,7 @@ func (opf xmlOPF) toMData() mdata {
 	return metadata
 }
 
-func elementToMData(element interface{}) (result mdataElement) {
+func elementToMData(element interface{}) (result MdataElement) {
 	result.attr = make(map[string]string)
 	switch element.(type) {
 	case string:

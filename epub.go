@@ -8,22 +8,25 @@ import (
 	"archive/zip"
 	"errors"
 	"io"
+	"io/ioutil"
 	"os"
+	"regexp"
+	"strings"
 )
 
 // Epub holds all the data of the ebook
 type Epub struct {
-	file                *os.File
-	zip                 *zip.Reader
-	rootPath            string
-	metadata            mdata
-	opf                 *xmlOPF
-	NCX                 *XmlNCX
-	CharactorStatistics []*CharactorStatistic
+	file     *os.File
+	zip      *zip.Reader
+	rootPath string
+	metadata MetaDataList
+	opf      *xmlOPF
+	NCX      *XmlNCX
+	// CharactorStatistics CharactorStatisticArray
 }
 
-type mdata map[string][]mdataElement
-type mdataElement struct {
+type MetaDataList map[string][]MdataElement
+type MdataElement struct {
 	content string
 	attr    map[string]string
 }
@@ -47,7 +50,7 @@ func Open(path string) (e *Epub, err error) {
 func Load(r io.ReaderAt, size int64) (e *Epub, err error) {
 	e = new(Epub)
 	e.file = nil
-	e.CharactorStatistics = []*CharactorStatistic{}
+	// e.CharactorStatistics = CharactorStatisticArray{}
 	err = e.load(r, size)
 	return
 }
@@ -66,6 +69,30 @@ func (e *Epub) load(r io.ReaderAt, size int64) (err error) {
 	return e.parseFiles()
 }
 
+func isTextContent(mediaType string) bool {
+	return mediaType == "application/xhtml+xml"
+}
+
+func (e *Epub) CountFileCharactor(ele *manifest) error {
+
+	if isTextContent(ele.MediaType) {
+		if len(ele.Href) > 0 {
+			reader_closer, err := e.OpenFile(ele.Href)
+			if err != nil {
+				return err
+			}
+			defer reader_closer.Close()
+			content, err := getHtmlContent(reader_closer)
+			if err != nil {
+				return err
+			}
+			ele.CharactorCount = len(content)
+			return nil
+		}
+	}
+	return nil
+}
+
 func (e *Epub) parseFiles() (err error) {
 	opfFile, err := openOPF(e.zip)
 	if err != nil {
@@ -77,25 +104,35 @@ func (e *Epub) parseFiles() (err error) {
 		return
 	}
 
-	if e.opf.spineLength() > 0 {
-		statistics := []*CharactorStatistic{}
-		for _, item := range e.opf.Spine.Items {
-			reader_closer, err := e.OpenFileId(item.IDref)
+	if e.opf.Manifest != nil && len(e.opf.Manifest) > 0 {
+		for _, ele := range e.opf.Manifest {
+			err = e.CountFileCharactor(ele)
 			if err != nil {
-				return err
+				return
 			}
-			defer reader_closer.Close()
-			content, err := GetHtmlContent(reader_closer)
-			if err != nil {
-				return err
-			}
-			statistics = append(statistics, &CharactorStatistic{
-				File:   (item.IDref),
-				Length: len(content),
-			})
 		}
-		e.CharactorStatistics = statistics
 	}
+
+	// if e.opf.spineLength() > 0 {
+	// 	statistics := []*CharactorStatistic{}
+	// 	for _, item := range e.opf.Spine.Items {
+	// 		reader_closer, err := e.OpenFileId(item.IDref)
+	// 		if err != nil {
+	// 			return err
+	// 		}
+	// 		defer reader_closer.Close()
+	// 		content, err := GetHtmlContent(reader_closer)
+	// 		if err != nil {
+	// 			return err
+	// 		}
+	// 		item.CharactorCount = len(content)
+	// 		statistics = append(statistics, &CharactorStatistic{
+	// 			File:   (item.IDref),
+	// 			Length: len(content),
+	// 		})
+	// 	}
+	// 	e.CharactorStatistics = statistics
+	// }
 
 	e.metadata = e.opf.toMData()
 	ncxPath := e.opf.ncxPath()
@@ -187,4 +224,51 @@ func (e Epub) MetadataAttr(field string) ([]map[string]string, error) {
 	}
 
 	return nil, errors.New("Field " + field + " don't exists")
+}
+
+func (e *Epub) FileManifest(file string) *manifest {
+	for _, ele := range e.opf.Manifest {
+		if ele.Href == file {
+			return ele
+		}
+	}
+	return nil
+}
+
+func getHtmlContent(reader io.Reader) ([]rune, error) {
+	b, err := ioutil.ReadAll(reader)
+	if err != nil {
+		return nil, err
+	}
+	src := string(b)
+	//将HTML标签全转换成小写
+	re, _ := regexp.Compile("\\<[\\S\\s]+?\\>")
+	src = re.ReplaceAllStringFunc(src, strings.ToLower)
+
+	body_head := strings.Index(src, "<body>")
+	body_tail := strings.Index(src, "</body>")
+	if body_head >= 0 && body_tail >= 0 && body_tail > body_head {
+		src = src[body_head+6 : body_tail]
+	}
+	//去除STYLE
+	re, _ = regexp.Compile("\\<style[\\S\\s]+?\\</style\\>")
+	src = re.ReplaceAllString(src, "")
+
+	//去除SCRIPT
+	re, _ = regexp.Compile("\\<script[\\S\\s]+?\\</script\\>")
+	src = re.ReplaceAllString(src, "")
+
+	//去除所有尖括号内的HTML代码，并换成换行符
+	re, _ = regexp.Compile("\\<[\\S\\s]+?\\>")
+	src = re.ReplaceAllString(src, "\n")
+
+	//去除连续的换行符
+	re, _ = regexp.Compile("\\s{2,}")
+	src = re.ReplaceAllString(src, "\n")
+
+	src = strings.Replace(src, "\n", "", -1)
+	src = strings.TrimSpace(src)
+	src_rune := []rune(src)
+
+	return src_rune, nil
 }

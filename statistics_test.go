@@ -2,27 +2,34 @@ package epubgo
 
 import (
 	"testing"
+
 	// . "github.com/smartystreets/goconvey/convey"
+	"fmt"
 )
+
+type CharactorStatistic struct {
+	File   string
+	Length int
+}
 
 var (
 	gcdxy_epub = "testdata/gcdxy.epub"
 
 	statistics = []CharactorStatistic{
 		{
-			File:   "b_content_xhtml",
+			File:   "b_content.xhtml",
 			Length: 220,
 		},
 		{
-			File:   "chapter_00001_xhtml",
+			File:   "chapter_00001.xhtml",
 			Length: 3,
 		},
 		{
-			File:   "chapter_00002_xhtml",
+			File:   "chapter_00002.xhtml",
 			Length: 685,
 		},
 		{
-			File:   "chapter_00003_xhtml",
+			File:   "chapter_00003.xhtml",
 			Length: 1304,
 		},
 	}
@@ -35,28 +42,23 @@ func TestStatistics(t *testing.T) {
 	}
 	defer f.Close()
 
-	if len(f.CharactorStatistics) < 2 {
-		t.Errorf("count err")
-	}
-
-	test_statistic := func(sta CharactorStatistic) (bool, int) {
-		for _, statistic := range f.CharactorStatistics {
-			if statistic.File == sta.File {
-				if statistic.Length == sta.Length {
-					return true, sta.Length
-				} else {
-					return false, statistic.Length
-				}
-			}
+	total_count := 0
+	for _, ele := range f.opf.Manifest {
+		total_count += ele.CharactorCount
+		if ele.CharactorCount > 0 {
+			fmt.Println(ele.Href, " : ", ele.CharactorCount)
 		}
-		return false, -1
 	}
+	fmt.Println("tatal: ", total_count)
 
 	for _, statistic := range statistics {
-		b, n := test_statistic(statistic)
-		if b == false {
-			t.Errorf("file %s expect %d and acturlly %d",
-				statistic.File, statistic.Length, n)
+		manifest := f.FileManifest(statistic.File)
+		if manifest == nil {
+			t.Fatal("file ", statistic.File, " expected")
+		}
+		if manifest.CharactorCount != statistic.Length {
+			t.Fatalf("file %s expect %d and acturlly %d",
+				statistic.File, statistic.Length, manifest.CharactorCount)
 		}
 	}
 }
