@@ -22,7 +22,6 @@ type Epub struct {
 	metadata MetaDataList
 	opf      *xmlOPF
 	NCX      *XmlNCX
-	// CharactorStatistics CharactorStatisticArray
 }
 
 type MetaDataList map[string][]MdataElement
@@ -93,46 +92,25 @@ func (e *Epub) CountFileCharactor(ele *manifest) error {
 	return nil
 }
 
-func (e *Epub) parseFiles() (err error) {
+func (e *Epub) parseFiles() error {
 	opfFile, err := openOPF(e.zip)
 	if err != nil {
-		return
+		return err
 	}
 	defer opfFile.Close()
 	e.opf, err = parseOPF(opfFile)
 	if err != nil {
-		return
+		return err
 	}
 
 	if e.opf.Manifest != nil && len(e.opf.Manifest) > 0 {
 		for _, ele := range e.opf.Manifest {
 			err = e.CountFileCharactor(ele)
 			if err != nil {
-				return
+				return err
 			}
 		}
 	}
-
-	// if e.opf.spineLength() > 0 {
-	// 	statistics := []*CharactorStatistic{}
-	// 	for _, item := range e.opf.Spine.Items {
-	// 		reader_closer, err := e.OpenFileId(item.IDref)
-	// 		if err != nil {
-	// 			return err
-	// 		}
-	// 		defer reader_closer.Close()
-	// 		content, err := GetHtmlContent(reader_closer)
-	// 		if err != nil {
-	// 			return err
-	// 		}
-	// 		item.CharactorCount = len(content)
-	// 		statistics = append(statistics, &CharactorStatistic{
-	// 			File:   (item.IDref),
-	// 			Length: len(content),
-	// 		})
-	// 	}
-	// 	e.CharactorStatistics = statistics
-	// }
 
 	e.metadata = e.opf.toMData()
 	ncxPath := e.opf.ncxPath()
@@ -143,8 +121,19 @@ func (e *Epub) parseFiles() (err error) {
 		}
 		defer ncx.Close()
 		e.NCX, err = parseNCX(ncx)
+		if err != nil {
+			return err
+		}
+		e.NCX.NavMap.SetContentCount(func(file string) int {
+			for _, ele := range e.opf.Manifest {
+				if ele.Href == file {
+					return ele.CharactorCount
+				}
+			}
+			return 0
+		})
 	}
-	return
+	return nil
 }
 
 // Close closes the epub file

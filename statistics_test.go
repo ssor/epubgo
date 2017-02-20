@@ -61,6 +61,14 @@ func TestStatistics(t *testing.T) {
 				statistic.File, statistic.Length, manifest.CharactorCount)
 		}
 	}
+
+	// navs, err := f.Navigation()
+	// if err != nil {
+	// 	t.Fatal("nav err: ", err)
+	// }
+	// for _, nav := range navs.Next() {
+	// 	fmt.Println(nav)
+	// }
 }
 
 // func TestGetHtmlContent(t *testing.T) {

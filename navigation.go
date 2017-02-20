@@ -33,7 +33,9 @@ func newNavigationIterator(navMap NavPointArray) (*NavigationIterator, error) {
 
 // Title returns the title of the item on the iterator
 func (nav NavigationIterator) Title() string {
-	return nav.item().Title()
+	// return nav.item().Title()
+	return nav.item().LevelTitle()
+
 }
 
 // URL returns the url of the item on the iterator
