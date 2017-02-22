@@ -2,7 +2,7 @@
 // Use of this source code is governed by a LGPL licence
 // version 3 or later that can be found in the LICENSE file.
 
-package epubgo
+package raw
 
 import "testing"
 
@@ -11,15 +11,15 @@ import (
 )
 
 const (
-	encodingOpf = "testdata/encoding_err.opf"
+	nbspNCX = "../testdata/nbsp.ncx"
 )
 
-func TestEncodingError(t *testing.T) {
-	file, _ := os.Open(encodingOpf)
+func TestNbspNcx(t *testing.T) {
+	file, _ := os.Open(nbspNCX)
 	defer file.Close()
 
-	_, err := parseOPF(file)
+	_, err := parseNCX(file)
 	if err != nil {
-		t.Errorf("parseOpf(%v) with encoding problems return an error: %v", encodingOpf, err)
+		t.Errorf("parseNCX(%v) with encoding problems return an error: %v", nbspNCX, err)
 	}
 }

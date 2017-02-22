@@ -2,11 +2,9 @@
 // Use of this source code is governed by a LGPL licence
 // version 3 or later that can be found in the LICENSE file.
 
-package epubgo
+package raw
 
-import (
-	"errors"
-)
+import "errors"
 
 // NavigationIterator is an iterator on the epub navigation index tree.
 //
@@ -33,8 +31,7 @@ func newNavigationIterator(navMap NavPointArray) (*NavigationIterator, error) {
 
 // Title returns the title of the item on the iterator
 func (nav NavigationIterator) Title() string {
-	// return nav.item().Title()
-	return nav.item().LevelTitle()
+	return nav.item().Title()
 
 }
 

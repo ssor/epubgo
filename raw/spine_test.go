@@ -2,7 +2,7 @@
 // Use of this source code is governed by a LGPL licence
 // version 3 or later that can be found in the LICENSE file.
 
-package epubgo
+package raw
 
 import "testing"
 
@@ -16,7 +16,7 @@ const (
 )
 
 func TestFirst(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	it, err := f.Spine()
@@ -32,7 +32,7 @@ func TestFirst(t *testing.T) {
 }
 
 func TestLast(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	it, _ := f.Spine()
@@ -48,7 +48,7 @@ func TestLast(t *testing.T) {
 }
 
 func TestLastNext(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	it, _ := f.Spine()
@@ -61,7 +61,7 @@ func TestLastNext(t *testing.T) {
 }
 
 func TestMove(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	it, _ := f.Spine()
@@ -86,7 +86,7 @@ func TestMove(t *testing.T) {
 }
 
 func TestSpineURL(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	it, _ := f.Spine()
@@ -96,7 +96,7 @@ func TestSpineURL(t *testing.T) {
 }
 
 func TestSpineOpen(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	it, _ := f.Spine()

@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<package xmlns:opf="http://www.idpf.org/2007/opf" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="id">
+  <metadata>
+    <dc:rights>Public domain in the USA.</dc:rights>
+    <dc:identifier id="id" opf:scheme="URI">http://www.gutenberg.org/ebooks/3174</dc:identifier>
+    <dc:creator opf:file-as="Twain, Mark">Mark Twain</dc:creator>
+    <dc:title>A Dog's Tale</dc:title>
+    <dc:language xsi:type="dcterms:RFC4646">en</dc:language>
+    <dc:subject>Dogs -- Fiction</dc:subject>
+    <dc:date opf:event="publication">2004-06-01</dc:date>
+    <dc:date opf:event="conversion">2012-12-10T18:34:32.357240+00:00</dc:date>
+    <dc:source>http://www.gutenberg.org/files/3174/3174-h/3174-h.htm</dc:source>
+    <meta content="coverpage" name="cover"/>
+  </metadata>
+  <manifest>
+    <!--Image: 800 x 1184 size=111402 (was 857 x 1269 scale=0.93) q=50-->
+    <item href="@public@vhost@g@gutenberg@html@files@3174@3174-h@images@cover.jpg" id="coverpage" media-type="image/jpeg"/>
+    <!--Image: 513 x 881 size=46143 -->
+    <item href="@public@vhost@g@gutenberg@html@files@3174@3174-h@images@Frontpiece.jpg" id="item1" media-type="image/jpeg"/>
+    <!--Image: 800 x 469 size=73356 (was 810 x 475 scale=0.99) q=90-->
+    <item href="@public@vhost@g@gutenberg@html@files@3174@3174-h@images@p18.jpg" id="item2" media-type="image/jpeg"/>
+    <!--Image: 537 x 799 size=46027 -->
+    <item href="@public@vhost@g@gutenberg@html@files@3174@3174-h@images@p28.jpg" id="item3" media-type="image/jpeg"/>
+    <!--Image: 527 x 859 size=49169 -->
+    <item href="@public@vhost@g@gutenberg@html@files@3174@3174-h@images@p34.jpg" id="item4" media-type="image/jpeg"/>
+    <item href="pgepub.css" id="item5" media-type="text/css"/>
+    <item href="0.css" id="item6" media-type="text/css"/>
+    <item href="1.css" id="item7" media-type="text/css"/>
+    <!--Chunk: size=51873-->
+    <item href="@public@vhost@g@gutenberg@html@files@3174@3174-h@3174-h-0.htm.html" id="item8" media-type="application/xhtml+xml"/>
+    <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml"/>
+    <item href="wrap0000.html" id="coverpage-wrapper" media-type="application/xhtml+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="coverpage-wrapper" linear="no"/>
+    <itemref idref="item8" linear="yes"/>
+  </spine>
+  <guide>
+    <reference href="wrap0000.html" type="cover" title="Cover"/>
+  </guide>
+</package>

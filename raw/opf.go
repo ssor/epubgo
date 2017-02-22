@@ -2,7 +2,7 @@
 // Use of this source code is governed by a LGPL licence
 // version 3 or later that can be found in the LICENSE file.
 
-package epubgo
+package raw
 
 import (
 	"errors"
@@ -60,13 +60,12 @@ type metafield struct {
 	Content string `xml:"content,attr"`
 }
 type manifest struct {
-	ID             string `xml:"id,attr"`
-	Href           string `xml:"href,attr"`
-	MediaType      string `xml:"media-type,attr"`
-	Fallback       string `xml:"media-fallback,attr"`
-	Properties     string `xml:"properties,attr"`
-	MediaOverlay   string `xml:"media-overlay,attr"`
-	CharactorCount int
+	ID           string `xml:"id,attr"`
+	Href         string `xml:"href,attr"`
+	MediaType    string `xml:"media-type,attr"`
+	Fallback     string `xml:"media-fallback,attr"`
+	Properties   string `xml:"properties,attr"`
+	MediaOverlay string `xml:"media-overlay,attr"`
 }
 type spine struct {
 	ID              string      `xml:"id,attr"`

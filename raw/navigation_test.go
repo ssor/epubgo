@@ -2,7 +2,7 @@
 // Use of this source code is governed by a LGPL licence
 // version 3 or later that can be found in the LICENSE file.
 
-package epubgo
+package raw
 
 import "testing"
 
@@ -13,7 +13,7 @@ const (
 )
 
 func TestIterator(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	it, err := f.Navigation()
@@ -35,7 +35,7 @@ func TestIterator(t *testing.T) {
 }
 
 func TestTitle(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	it, _ := f.Navigation()
@@ -45,7 +45,7 @@ func TestTitle(t *testing.T) {
 }
 
 func TestURL(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	it, _ := f.Navigation()
@@ -55,7 +55,7 @@ func TestURL(t *testing.T) {
 }
 
 func TestDepth(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	it, _ := f.Navigation()

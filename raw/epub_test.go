@@ -2,19 +2,21 @@
 // Use of this source code is governed by a LGPL licence
 // version 3 or later that can be found in the LICENSE file.
 
-package epubgo
+package raw
 
 import "testing"
 
 import (
 	"archive/zip"
 	"bytes"
+	"fmt"
 	"io/ioutil"
-	"os"
+
+	"github.com/davecgh/go-spew/spew"
 )
 
 const (
-	bookPath          = "testdata/a_dogs_tale.epub"
+	bookPath          = "../testdata/a_dogs_tale.epub"
 	bookTitle         = "A Dog's Tale"
 	bookLang          = "en"
 	bookIdentifier    = "http://www.gutenberg.org/ebooks/3174"
@@ -28,33 +30,21 @@ const (
 	htmlFile          = "@public@vhost@g@gutenberg@html@files@3174@3174-h@3174-h-0.htm.html"
 	fileId            = "item8"
 	htmlPath          = "3174/" + htmlFile
-	noNCXPath         = "testdata/noncx.epub"
-	invalidNCXPath    = "testdata/invalidncx.epub"
-	fileCapsPath      = "testdata/fileCaps.epub"
+	noNCXPath         = "../testdata/noncx.epub"
+	invalidNCXPath    = "../testdata/invalidncx.epub"
+	fileCapsPath      = "../testdata/fileCaps.epub"
 )
 
-func TestOpenClose(t *testing.T) {
-	f, err := Open(bookPath)
-	if err != nil {
-		t.Errorf("Open(%v) return an error: %v", bookPath, err)
-	}
-
-	f.Close()
-}
-
-func TestLoad(t *testing.T) {
-	file, _ := os.Open(bookPath)
-	fileInfo, _ := file.Stat()
-	f, err := Load(file, fileInfo.Size())
-	if err != nil {
-		t.Errorf("Open(%v) return an error: %v", bookPath, err)
-	}
-
-	f.Close()
-}
+const (
+	bookPath_learning = "../testdata/the_art_of_learning.epub"
+)
 
 func TestOpenFile(t *testing.T) {
-	f, _ := Open(bookPath)
+	// f, _ := Open(bookPath)
+	f, err := NewEpub(bookPath)
+	if err != nil {
+		t.Fatal("open ", bookPath, " error: ", err)
+	}
 	defer f.Close()
 
 	html, err := f.OpenFile(htmlFile)
@@ -87,7 +77,7 @@ func TestOpenFile(t *testing.T) {
 }
 
 func TestOpenFileId(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	html, err := f.OpenFileId(fileId)
@@ -120,7 +110,7 @@ func TestOpenFileId(t *testing.T) {
 }
 
 func TestNoNCX(t *testing.T) {
-	f, err := Open(noNCXPath)
+	f, err := NewEpub(noNCXPath)
 	if err != nil {
 		t.Errorf("Open(%v) return an error: %v", noNCXPath, err)
 	}
@@ -128,7 +118,7 @@ func TestNoNCX(t *testing.T) {
 }
 
 func TestInvalidNCX(t *testing.T) {
-	f, err := Open(invalidNCXPath)
+	f, err := NewEpub(invalidNCXPath)
 	if err != nil {
 		t.Errorf("Open(%v) return an error: %v", invalidNCXPath, err)
 	}
@@ -136,7 +126,7 @@ func TestInvalidNCX(t *testing.T) {
 }
 
 func TestFileCaps(t *testing.T) {
-	f, err := Open(fileCapsPath)
+	f, err := NewEpub(fileCapsPath)
 	if err != nil {
 		t.Errorf("Open(%v) return an error: %v", fileCapsPath, err)
 	}
@@ -144,7 +134,7 @@ func TestFileCaps(t *testing.T) {
 }
 
 func TestMetadata(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	if title, _ := f.Metadata("title"); title[0] != bookTitle {
@@ -168,7 +158,7 @@ func TestMetadata(t *testing.T) {
 }
 
 func TestMetadataFields(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	fields := f.MetadataFields()
@@ -188,7 +178,7 @@ func TestMetadataFields(t *testing.T) {
 }
 
 func TestMetadataAttr(t *testing.T) {
-	f, _ := Open(bookPath)
+	f, _ := NewEpub(bookPath)
 	defer f.Close()
 
 	if identifier, _ := f.MetadataAttr("identifier"); identifier[0]["scheme"] != identifierScheme {
@@ -200,4 +190,15 @@ func TestMetadataAttr(t *testing.T) {
 	if meta, _ := f.MetadataAttr("meta"); meta[0]["name"] != metaName {
 		t.Errorf("Metadata meta attr name '%v', the expected was '%v'", meta[0]["name"], metaName)
 	}
+
+	fmt.Println(f.MetadataFields())
+	spew.Dump(f.MetadataAttr("meta"))
+}
+
+func TestMetadataAttr2(t *testing.T) {
+	f, _ := NewEpub(bookPath_learning)
+	defer f.Close()
+
+	fmt.Println(f.MetadataFields())
+	spew.Dump(f.MetadataAttr("meta"))
 }
