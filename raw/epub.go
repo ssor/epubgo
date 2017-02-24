@@ -158,6 +158,15 @@ func (e Epub) OpenFile(name string) (io.ReadCloser, error) {
 	return e.reader.OpenFile(path.Join(e.rootPath, name))
 }
 
+func (e *Epub) Files() []string {
+	files := []string{}
+
+	for _, item := range e.opf.Manifest {
+		files = append(files, item.Href)
+	}
+	return files
+}
+
 // OpenFileId opens a file from it's id
 //
 // The id of the files often appears on metadata fields
